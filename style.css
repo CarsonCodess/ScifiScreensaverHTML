@@ -168,9 +168,14 @@ body {
 
 .latlon-block {
     display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.35rem;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
+    color: var(--text);
+    white-space: nowrap;
 }
 
 .date-build-block {

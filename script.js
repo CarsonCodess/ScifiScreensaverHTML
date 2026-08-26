@@ -134,6 +134,8 @@ updateClock();
 getDate();
 getBatteryandNetworkStatus();
 getTemperature();
+getLocation();
+getDotDate();
 
 
 setInterval(() => {
