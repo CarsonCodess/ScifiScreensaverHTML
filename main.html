@@ -18,14 +18,14 @@
 
         <div class="batterywifi-indicator">
           <span class="indicator-dot">•</span>
-          <span id="network"></span>
-          <span id="battery"></span>
+          <span id="network">Loading Network...</span>
+          <span id="battery">Loading Battery...</span>
         </div>
       </div>
 
       <div class="hud">
-        <h1 id="time"></h1>
-        <p id="date"></p>
+        <h1 id="time">Loading Time...</h1>
+        <p id="date">Loading Date...</p>
 
         <div class="sun-cycle"></div>
 
@@ -38,8 +38,8 @@
             <div class="identity-divider"></div>
         </div>
 
-        <div class="system-block">
-            <p>SYSTEM</p>
+        <div class="outdoor-block">
+            <p>OUTDOOR CONDITIONS</p>
             <div class="identity-divider"></div>
         </div>
 
@@ -52,9 +52,19 @@
             <p>NETWORK</p>
             <div class="identity-divider"></div>
         </div>
-
       </div>
+    </div>
 
+    <div class="bottombar">
+        <div class="latlon-block">
+            <span class="lat-lon">Loading Coordinates...</span>
+        </div>
+    
+        <div class="date-build-block">
+            <div class="latlon-divider"></div>
+            <span id="dotdate">Loading Date...</span>
+            <p>// Build BETA</p>
+        </div>
     </div>
 
     <script src="script.js"></script>

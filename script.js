@@ -12,6 +12,14 @@ function getDate() {
     document.getElementById('date').textContent = day + ' // ' + today;
 }
 
+function getDotDate() {
+    const month = new Date().toLocaleDateString('en-US', { month: 'numeric' });
+    const day = new Date().toLocaleDateString('en-US', { day: 'numeric' });
+    const year = new Date().toLocaleDateString('en-US', { year: 'numeric' });
+
+    document.getElementById('dotdate').textContent = month + '.' + day + '.' + year;
+}
+
 function getBatteryandNetworkStatus() {
     if ('getBattery' in navigator) {
         navigator.getBattery().then(battery => {
@@ -106,6 +114,21 @@ function getTemperature() {
     }
 }
 
+function getLocation() {
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            document.getElementById('lat-lon').textContent = `Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)}`;
+        },
+        (error) => {
+            document.getElementById('lat-lon').textContent = error.code === error.PERMISSION_DENIED
+                ? 'Location denied'
+                : 'Location unavailable';
+        }
+    );
+}
+
 
 updateClock();
 getDate();
@@ -116,8 +139,10 @@ getTemperature();
 setInterval(() => {
     updateClock();
     getDate();
+    getDotDate();
 }, 1000);
 
 setInterval(() => {
     getTemperature();
+    getLocation();
 }, 600000);

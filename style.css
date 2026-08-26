@@ -111,7 +111,7 @@ body {
 }
 
 .weather-block,
-.system-block,
+.outdoor-block,
 .console-block,
 .network-block {
     position: absolute;
@@ -140,19 +140,63 @@ body {
     transform: translateY(80%);
 }
 
-.system-block,
+.outdoor-block,
 .network-block {
     right: 8.5rem;
     align-items: flex-end;
     text-align: right;
 }
 
-.system-block {
+.outdoor-block {
     transform: translateY(-110%);
 }
 
 .network-block {
     transform: translateY(80%);
+}
+
+.bottombar {
+    position: absolute;
+    bottom: 2rem;
+    left: 2.5rem;
+    right: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 3;
+}
+
+.latlon-block {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+}
+
+.date-build-block {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.lat-lon {
+    font-size: 0.7rem;
+    letter-spacing: 0.25rem;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1;
+}
+
+.latlon-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.7);
 }
 
 .stars {
