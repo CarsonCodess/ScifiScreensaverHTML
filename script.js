@@ -6,15 +6,13 @@ function updateClock() {
 }
 
 function getDate() {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const options = {month: 'long', day: 'numeric' };
     const today = new Date().toLocaleDateString('en-US', options);
-    document.getElementById('date').textContent = today;
-}
 
-function getDay() {
-    const options = { weekday: 'long' };
-    const today = new Date().toLocaleDateString('en-US', options);
-    document.getElementById('day').textContent = today;
+    const dayoptions = { weekday: 'long' };
+    const day = new Date().toLocaleDateString('en-US', dayoptions);
+
+    document.getElementById('date').textContent = day + ' // ' + today;
 }
 
 function getBatteryandNetworkStatus() {
@@ -43,12 +41,10 @@ function getBatteryandNetworkStatus() {
 
 updateClock();
 getDate();
-getDay();
 getBatteryandNetworkStatus();
 
 setInterval(() => {
     updateClock();
     getDate();
-    getDay();
     getBatteryandNetworkStatus();
 }, 1000);

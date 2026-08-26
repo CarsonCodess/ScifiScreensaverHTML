@@ -110,6 +110,51 @@ body {
   line-height: 1;
 }
 
+.weather-block,
+.system-block,
+.console-block,
+.network-block {
+    position: absolute;
+    top: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
+    z-index: 3;
+}
+
+.weather-block,
+.console-block {
+    left: 8.5rem;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.weather-block {
+    transform: translateY(-110%);
+}
+
+.console-block {
+    transform: translateY(80%);
+}
+
+.system-block,
+.network-block {
+    right: 8.5rem;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.system-block {
+    transform: translateY(-110%);
+}
+
+.network-block {
+    transform: translateY(80%);
+}
+
 .stars {
   position: absolute;
   inset: 0;
