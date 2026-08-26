@@ -57,14 +57,14 @@ function getTemperature() {
             async (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code,wind_speed_10m`;
+                const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weather_code,wind_speed_10m_max&hourly=temperature_2m,weather_code,wind_speed_10m&current=temperature_2m&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`;
 
                 try {
                     const response = await fetch(apiURL);
                     if (!response.ok) throw new Error();
                     const data = await response.json();
 
-                    tempElement.innerHTML = `${Math.round((data.hourly.temperature_2m[0]) * (9 / 5) + 32)}&deg;F`;
+                    tempElement.innerHTML = `${Math.round(data.hourly.temperature_2m[0])}&deg;F`;
 
                     const code = data.hourly.weather_code[0];
                     const weather =
@@ -97,8 +97,8 @@ function getTemperature() {
                                                                                                                                 code === 96 || code === 99 ? 'Thunderstorm with Hail' : 'Unknown';
 
                     conditionElement.innerHTML = weather;
-                    highlowElement.innerHTML = `H: ${Math.round((data.daily.temperature_2m_max[0]) * (9 / 5) + 32)}&deg;F L: ${Math.round((data.daily.temperature_2m_min[0]) * (9 / 5) + 32)}&deg;F`;
-                    windElement.innerHTML = `Wind: ${Math.round(data.hourly.wind_speed_10m[0] * 2.237)} mph`;
+                    highlowElement.innerHTML = `H: ${Math.round((data.daily.temperature_2m_max[0]))}&deg;F L: ${Math.round((data.daily.temperature_2m_min[0]))}&deg;F`;
+                    windElement.innerHTML = `Wind: ${Math.round(data.hourly.wind_speed_10m[0])} mph`;
                 } catch (error) {
                     tempElement.textContent = 'Error loading temp';
                 }
@@ -112,6 +112,10 @@ function getTemperature() {
     } else {
         tempElement.textContent = 'Not supported';
     }
+}
+
+function getConditions() {
+
 }
 
 function getLocation() {
@@ -136,15 +140,18 @@ getBatteryandNetworkStatus();
 getTemperature();
 getLocation();
 getDotDate();
+getConditions();
 
 
 setInterval(() => {
     updateClock();
     getDate();
     getDotDate();
+    getBatteryandNetworkStatus();
 }, 1000);
 
 setInterval(() => {
     getTemperature();
     getLocation();
+    getConditions();
 }, 600000);
