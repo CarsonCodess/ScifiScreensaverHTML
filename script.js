@@ -136,7 +136,6 @@ getBatteryandNetworkStatus();
 getTemperature();
 getLocation();
 getDotDate();
-getConditions();
 
 
 setInterval(() => {
@@ -149,5 +148,4 @@ setInterval(() => {
 setInterval(() => {
     getTemperature();
     getLocation();
-    getConditions();
 }, 600000);
