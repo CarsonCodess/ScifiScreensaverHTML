@@ -57,7 +57,7 @@ function getTemperature() {
             async (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weather_code,wind_speed_10m_max&hourly=temperature_2m,weather_code,wind_speed_10m&current=temperature_2m&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`;
+                const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code,wind_speed_10m&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`;
 
                 try {
                     const response = await fetch(apiURL);
@@ -112,10 +112,6 @@ function getTemperature() {
     } else {
         tempElement.textContent = 'Not supported';
     }
-}
-
-function getConditions() {
-
 }
 
 function getLocation() {
