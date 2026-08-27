@@ -44,75 +44,69 @@ function getBatteryandNetworkStatus() {
 }
 
 
-function getTemperature() {
+function getWeatherAndConditions() {
     const tempElement = document.getElementById('temperature');
     const conditionElement = document.getElementById('weather-condition');
     const highlowElement = document.getElementById('highlow');
     const windElement = document.getElementById('wind');
+    const humidityElement = document.getElementById('humidity');
+    const pressureElement = document.getElementById('pressure');
+    const visibilityElement = document.getElementById('visibility');
+    const UVElement = document.getElementById('UV');
 
-    if (!tempElement || !conditionElement || !highlowElement || !windElement) return;
+    if (!tempElement || !conditionElement || !highlowElement || !windElement ||
+        !humidityElement || !pressureElement || !visibilityElement || !UVElement) return;
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code,wind_speed_10m&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`;
+
+                const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max,temperature_2m_max,temperature_2m_min&hourly=visibility&current=pressure_msl,relative_humidity_2m,temperature_2m,wind_speed_10m,weather_code&timezone=auto&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`;
 
                 try {
                     const response = await fetch(apiURL);
                     if (!response.ok) throw new Error();
                     const data = await response.json();
 
-                    tempElement.innerHTML = `${Math.round(data.hourly.temperature_2m[0])}&deg;F`;
+                    tempElement.innerHTML = `${Math.round(data.current.temperature_2m)}&deg;F`;
+                    windElement.innerHTML = `Wind: ${Math.round(data.current.wind_speed_10m)} mph`;
+                    visibilityElement.innerHTML = `Visibility: ${Math.round(data.hourly.visibility[0])} m`;
 
-                    const code = data.hourly.weather_code[0];
-                    const weather =
-                        code === 0 ? 'Clear' :
-                            code === 1 ? 'Mainly Clear' :
-                                code === 2 ? 'Partly Cloudy' :
-                                    code === 3 ? 'Overcast' :
-                                        code === 45 ? 'Fog' :
-                                            code === 48 ? 'Depositing Rime Fog' :
-                                                code === 51 ? 'Drizzle: Light' :
-                                                    code === 53 ? 'Drizzle: Moderate' :
-                                                        code === 55 ? 'Drizzle: Dense' :
-                                                            code === 56 ? 'Freezing Drizzle: Light' :
-                                                                code === 57 ? 'Freezing Drizzle: Dense' :
-                                                                    code === 61 ? 'Rain: Slight' :
-                                                                        code === 63 ? 'Rain: Moderate' :
-                                                                            code === 65 ? 'Rain: Heavy' :
-                                                                                code === 66 ? 'Freezing Rain: Light' :
-                                                                                    code === 67 ? 'Freezing Rain: Heavy' :
-                                                                                        code === 71 ? 'Snow Fall: Slight' :
-                                                                                            code === 73 ? 'Snow Fall: Moderate' :
-                                                                                                code === 75 ? 'Snow Fall: Heavy' :
-                                                                                                    code === 77 ? 'Snow Grains' :
-                                                                                                        code === 80 ? 'Rain Showers: Slight' :
-                                                                                                            code === 81 ? 'Rain Showers: Moderate' :
-                                                                                                                code === 82 ? 'Rain Showers: Violent' :
-                                                                                                                    code === 85 ? 'Snow Showers: Slight' :
-                                                                                                                        code === 86 ? 'Snow Showers: Heavy' :
-                                                                                                                            code === 95 ? 'Thunderstorm: Slight or Moderate' :
-                                                                                                                                code === 96 || code === 99 ? 'Thunderstorm with Hail' : 'Unknown';
+                    const code = data.current.weather_code;
+                    const weatherMap = {
+                        0: 'Clear', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
+                        45: 'Fog', 48: 'Depositing Rime Fog', 51: 'Drizzle: Light',
+                        53: 'Drizzle: Moderate', 55: 'Drizzle: Dense', 56: 'Freezing Drizzle: Light',
+                        57: 'Freezing Drizzle: Dense', 61: 'Rain: Slight', 63: 'Rain: Moderate',
+                        65: 'Rain: Heavy', 66: 'Freezing Rain: Light', 67: 'Freezing Rain: Heavy',
+                        71: 'Snow Fall: Slight', 73: 'Snow Fall: Moderate', 75: 'Snow Fall: Heavy',
+                        77: 'Snow Grains', 80: 'Rain Showers: Slight', 81: 'Rain Showers: Moderate',
+                        82: 'Rain Showers: Violent', 85: 'Snow Showers: Slight', 86: 'Snow Showers: Heavy',
+                        95: 'Thunderstorm: Slight or Moderate', 96: 'Thunderstorm with Hail', 99: 'Thunderstorm with Hail'
+                    };
+                    conditionElement.innerHTML = weatherMap[code] || 'Unknown';
 
-                    conditionElement.innerHTML = weather;
-                    highlowElement.innerHTML = `H: ${Math.round((data.daily.temperature_2m_max[0]))}&deg;F L: ${Math.round((data.daily.temperature_2m_min[0]))}&deg;F`;
-                    windElement.innerHTML = `Wind: ${Math.round(data.hourly.wind_speed_10m[0])} mph`;
+                    highlowElement.innerHTML = `H: ${Math.round(data.daily.temperature_2m_max[0])}&deg;F L: ${Math.round(data.daily.temperature_2m_min[0])}&deg;F`;
+                    UVElement.innerHTML = `UV Index: ${Math.round(data.daily.uv_index_max[0])}`;
+
+                    humidityElement.innerHTML = `Humidity: ${Math.round(data.current.relative_humidity_2m)}%`;
+                    pressureElement.innerHTML = `Pressure: ${Math.round(data.current.pressure_msl)} hPa`;
+
                 } catch (error) {
-                    tempElement.textContent = 'Error loading temp';
+                    conditionElement.textContent = 'Error loading metrics';
                 }
             },
             (error) => {
-                tempElement.textContent = error.code === error.PERMISSION_DENIED
-                    ? 'Location denied'
-                    : 'Location unavailable';
+                conditionElement.textContent = error.code === error.PERMISSION_DENIED ? 'Location denied' : 'Location unavailable';
             }
         );
     } else {
-        tempElement.textContent = 'Not supported';
+        conditionElement.textContent = 'Not supported';
     }
 }
+
 
 function getLocation() {
     navigator.geolocation.getCurrentPosition(
@@ -133,7 +127,7 @@ function getLocation() {
 updateClock();
 getDate();
 getBatteryandNetworkStatus();
-getTemperature();
+getWeatherAndConditions();
 getLocation();
 getDotDate();
 
@@ -146,6 +140,6 @@ setInterval(() => {
 }, 1000);
 
 setInterval(() => {
-    getTemperature();
+    getWeatherAndConditions();
     getLocation();
 }, 600000);
