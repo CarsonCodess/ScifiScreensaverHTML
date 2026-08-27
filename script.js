@@ -14,7 +14,7 @@ function writeToTerminal(message, type = 'info') {
     } else if (type === 'fakeerror') {
         line.style.color = '#f535aa';
 
-    } else if (lowerMessage.includes('load') || lowerMessage.includes('fetch') || lowerMessage.includes('retrieved')) {
+    } else if (lowerMessage.includes('load') || lowerMessage.includes('fetch') || lowerMessage.includes('retrieved') || lowerMessage.includes('updated')) {
         line.style.color = '#00bcff';
     } else {
         line.style.color = '#00ff33';
@@ -192,12 +192,14 @@ const fakeErrors = [
 setInterval(() => {
     if (Math.random() < 0.4) {
 
-        if (Math.random() > 0.05) {
+        if (Math.random() > 0.06) {
             const randomPhrase = coolPhrases[Math.floor(Math.random() * coolPhrases.length)];
             writeToTerminal(randomPhrase, 'cool');
-        } else {
+        } else  if (Math.random() <= 0.6 && Math.random() > 0.1) {
             const randomError = fakeErrors[Math.floor(Math.random() * fakeErrors.length)];
             writeToTerminal(randomError, 'fakeerror');
+        } else {
+            console.log("EASTER EGGGGG THANK YOU FOR BEING ON MY WEBSITE IT MEANS A LOT TO ME.")
         }
 
     }
@@ -373,6 +375,9 @@ setInterval(() => {
     getDate();
     getDotDate();
     getBatteryandNetworkStatus();
+    if (Math.random() < 0.01) {
+        console.log("Clock, date, dot date, and battery/network status updated.");
+    }
 }, 1000);
 
 setInterval(() => {
